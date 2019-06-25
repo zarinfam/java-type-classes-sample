@@ -33,14 +33,19 @@ public class TypeClassSample {
         var pairs = List.of(new Pair<>(1, "hello"), new Pair<>(2, " "), new Pair<>(3, "world"));
         System.out.println(show(combineAll(pairs, deriveMonoidPair(intAdditionMonoid(), stringConcatMonoid())), showPair(showInt(), showString())));
 
-        var mPairs = List.of(new MPair<>(1, "hello", intAdditionMonoid(), stringConcatMonoid())
+        var mPairs = List.of(
+                new MPair<>(1, "hello", intAdditionMonoid(), stringConcatMonoid())
                 , new MPair<>(2, " ", intAdditionMonoid(), stringConcatMonoid())
                 , new MPair<>(3, "world", intAdditionMonoid(), stringConcatMonoid()));
-        combineAll(mPairs).ifPresent(v -> System.out.println(show(v, showMPair(showInt(), showString()))));
+        combineAll(mPairs)
+                .ifPresent(v -> System.out.println(show(v, showMPair(showInt(), showString()))));
 
         var p = new Person("Saeed", "zarinfam.s@gmail.com");
         var json = toJson(p, personWriter()).as(JsObject.class);
         System.out.println(json.get().get("name").as(JsString.class).get());
+
+        System.out.println(stringConcatMonoid().combine("x", stringConcatMonoid().combine("y", "z")));
+        System.out.println(stringConcatMonoid().combine(stringConcatMonoid().combine("x", "y"), "z"));
 
     }
 
